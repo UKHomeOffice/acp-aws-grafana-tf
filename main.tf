@@ -121,18 +121,9 @@ resource "aws_iam_role" "grafana_iam_role" {
   )
 }
 
-resource "aws_iam_role_policy_attachment" "additional" {
-  for_each = { for k, v in var.iam_role_policy_arns : k => v }
-
-  role       = aws_iam_role.grafana_iam_role.name
-  policy_arn = each.value
-}
-
 data "aws_iam_policy_document" "grafana_iam_policy_doc" {
 
-  dynamic "statement" {
-    for_each = contains(var.data_sources, "AMAZON_OPENSEARCH_SERVICE") ? [1] : []
-
+  "statement" {
     content {
       actions = [
         "es:ESHttpGet",
@@ -143,9 +134,7 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
     }
   }
 
-  dynamic "statement" {
-    for_each = contains(var.data_sources, "AMAZON_OPENSEARCH_SERVICE") ? [1] : []
-
+  "statement" {
     content {
       actions = [
         "es:ESHttpPost",
@@ -157,9 +146,7 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
     }
   }
 
-  dynamic "statement" {
-    for_each = contains(var.data_sources, "PROMETHEUS") ? [1] : []
-
+  "statement" {
     content {
       actions = [
         "aps:ListWorkspaces",
@@ -173,9 +160,7 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
     }
   }
 
-  dynamic "statement" {
-    for_each = contains(var.notification_destinations, "SNS") ? [1] : []
-
+  "statement" {
     content {
       actions = [
         "sns:Publish",
@@ -187,7 +172,7 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
 
 resource "aws_iam_policy" "grafana_iam_policy" {
 
-  name        = "aws-grafana-${var.name}-policy-"
+  name        = "aws-grafana-${var.name}-policy"
   description = "Managed by Terraform"
   policy      = data.aws_iam_policy_document.grafana_iam_policy_doc.json
 
@@ -203,10 +188,9 @@ resource "aws_iam_policy" "grafana_iam_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "grafana_policy_attach" {
-  for_each = { for k, v in local.policies_to_attach : k => v && v.attach }
 
   role       = aws_iam_role.grafana_iam_role.name
-  policy_arn = each.value.arn
+  policy_arn = "aws_iam_policy.grafana_iam_policy.arn"
 }
 
 resource "aws_iam_role_policy_attachment" "grafana_policy_attach_managed" {

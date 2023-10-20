@@ -3,10 +3,10 @@ resource "aws_grafana_workspace" "grafana_workspace" {
   name                      = var.name
   account_access_type       = var.account_access_type
   authentication_providers  = var.authentication_providers
-  permission_type           = 'SERVICE_MANAGED'
+  permission_type           = "SERVICE_MANAGED"
 
   configuration             = var.configuration
-  data_sources              = ['AMAZON_OPENSEARCH_SERVICE','CLOUDWATCH','PROMETHEUS']
+  data_sources              = ["AMAZON_OPENSEARCH_SERVICE","CLOUDWATCH","PROMETHEUS"]
   description               = "Managed by Terraform"
   grafana_version           = "9.4"
   notification_destinations = var.notification_destinations
@@ -25,7 +25,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
     for_each = length(var.vpc_configuration) > 0 ? [var.vpc_configuration] : []
 
     content {
-      security_group_ids = flatten(concat([aws_security_group.grafana_security_group.id], try(vpc_configuration.value.security_group_ids, []))) : vpc_configuration.value.security_group_ids
+      security_group_ids = var.create_security_group ? flatten(concat([aws_security_group.this[0].id], try(vpc_configuration.value.security_group_ids, []))) : vpc_configuration.value.security_group_ids
       subnet_ids         = vpc_configuration.value.subnet_ids
     }
   }
@@ -123,7 +123,7 @@ resource "aws_iam_role" "grafana_iam_role" {
 
 data "aws_iam_policy_document" "grafana_iam_policy_doc" {
 
-  "statement" {
+   statement {
     content {
       actions = [
         "es:ESHttpGet",
@@ -134,7 +134,7 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
     }
   }
 
-  "statement" {
+   statement {
     content {
       actions = [
         "es:ESHttpPost",
@@ -146,7 +146,7 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
     }
   }
 
-  "statement" {
+   statement {
     content {
       actions = [
         "aps:ListWorkspaces",
@@ -160,7 +160,7 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
     }
   }
 
-  "statement" {
+   statement {
     content {
       actions = [
         "sns:Publish",

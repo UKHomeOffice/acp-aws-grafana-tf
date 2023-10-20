@@ -5,6 +5,7 @@ variable "name" {
 
 variable "environment" {
   description = "The environment the Grafana Workspace is for i.e. dev, prod etc"
+  type        = string
 }
 
 variable "tags" {
@@ -42,18 +43,6 @@ variable "notification_destinations" {
   default     = []
 }
 
-variable "organization_role_name" {
-  description = "The role name that the workspace uses to access resources through Amazon Organizations"
-  type        = string
-  default     = null
-}
-
-variable "organizational_units" {
-  description = "The Amazon Organizations organizational units that the workspace is authorized to use data sources from"
-  type        = list(string)
-  default     = []
-}
-
 variable "vpc_configuration" {
   description = "The configuration settings for an Amazon VPC that contains data sources for your Grafana workspace to connect to"
   type        = any
@@ -76,12 +65,6 @@ variable "iam_role_permissions_boundary" {
   description = "ARN of the policy that is used to set the permissions boundary for the IAM role"
   type        = string
   default     = null
-}
-
-variable "iam_role_policy_arns" {
-  description = "List of ARNs of IAM policies to attach to the workspace IAM role"
-  type        = list(string)
-  default     = []
 }
 
 variable "saml_admin_role_values" {

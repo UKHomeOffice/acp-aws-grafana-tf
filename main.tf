@@ -52,7 +52,7 @@ resource "aws_security_group" "grafana_security_group" {
 
   name        = "aws-grafana-${var.name}"
   description = "Managed by Terraform"
-  vpc_id      = data.aws_subnet.grafana_subnet[0].vpc_id
+  vpc_id      = data.aws_subnet.grafana_subnet.vpc_id
 
   tags = merge(
     var.tags,

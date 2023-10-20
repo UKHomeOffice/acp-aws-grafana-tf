@@ -1,3 +1,5 @@
+data "aws_partition" "current" {}
+
 resource "aws_grafana_workspace" "grafana_workspace" {
 
   name                      = var.name

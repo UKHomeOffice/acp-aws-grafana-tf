@@ -124,18 +124,15 @@ resource "aws_iam_role" "grafana_iam_role" {
 data "aws_iam_policy_document" "grafana_iam_policy_doc" {
 
    statement {
-    content {
       actions = [
         "es:ESHttpGet",
         "es:DescribeElasticsearchDomains",
         "es:ListDomainNames",
       ]
       resources = ["*"]
-    }
   }
 
    statement {
-    content {
       actions = [
         "es:ESHttpPost",
       ]
@@ -143,11 +140,9 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
         "arn:${data.aws_partition.current.partition}:es:*:*:domain/*/_msearch*",
         "arn:${data.aws_partition.current.partition}:es:*:*:domain/*/_opendistro/_ppl",
       ]
-    }
   }
 
    statement {
-    content {
       actions = [
         "aps:ListWorkspaces",
         "aps:DescribeWorkspace",
@@ -157,16 +152,13 @@ data "aws_iam_policy_document" "grafana_iam_policy_doc" {
         "aps:GetMetricMetadata",
       ]
       resources = ["*"]
-    }
   }
 
    statement {
-    content {
       actions = [
         "sns:Publish",
       ]
       resources = ["arn:${data.aws_partition.current.partition}:sns:*:${data.aws_caller_identity.current.account_id}:grafana*"]
-    }
   }
 }
 

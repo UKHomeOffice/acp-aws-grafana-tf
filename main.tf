@@ -194,25 +194,27 @@ resource "aws_iam_role_policy_attachment" "grafana_policy_attach_managed" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaCloudWatchAccess"
 }
 
-#resource "aws_grafana_workspace_saml_configuration" "grafana_saml" {
-#
-#  admin_role_values       = var.saml_admin_role_values
-#  allowed_organizations   = var.saml_allowed_organizations
-#  editor_role_values      = var.saml_editor_role_values
-#  email_assertion         = var.saml_email_assertion
-#  groups_assertion        = var.saml_groups_assertion
-#  idp_metadata_url        = var.saml_idp_metadata_url
-#  idp_metadata_xml        = var.saml_idp_metadata_xml
-#  login_assertion         = var.saml_login_assertion
-#  login_validity_duration = var.saml_login_validity_duration
-#  name_assertion          = var.saml_name_assertion
-#  org_assertion           = var.saml_org_assertion
-#  role_assertion          = var.saml_role_assertion
-#  workspace_id            = aws_grafana_workspace.grafana_workspace.id
-#}
+resource "aws_grafana_workspace_saml_configuration" "grafana_saml" {
+  count = var.create_saml_configuration && contains(var.authentication_providers, "SAML") ? 1 : 0
 
-#resource "aws_grafana_license_association" "grafana_license_association" {
-#
-#  license_type = var.license_type
-#  workspace_id = aws_grafana_workspace.grafana_workspace.id
-#}
+  admin_role_values       = var.saml_admin_role_values
+  allowed_organizations   = var.saml_allowed_organizations
+  editor_role_values      = var.saml_editor_role_values
+  email_assertion         = var.saml_email_assertion
+  groups_assertion        = var.saml_groups_assertion
+  idp_metadata_url        = var.saml_idp_metadata_url
+  idp_metadata_xml        = var.saml_idp_metadata_xml
+  login_assertion         = var.saml_login_assertion
+  login_validity_duration = var.saml_login_validity_duration
+  name_assertion          = var.saml_name_assertion
+  org_assertion           = var.saml_org_assertion
+  role_assertion          = var.saml_role_assertion
+  workspace_id            = aws_grafana_workspace.grafana_workspace.id
+}
+
+resource "aws_grafana_license_association" "grafana_license_association" {
+  count = var.associate_license ? 1 : 0
+
+  license_type = var.license_type
+  workspace_id = aws_grafana_workspace.grafana_workspace.id
+}

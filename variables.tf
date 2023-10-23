@@ -98,13 +98,13 @@ variable "saml_groups_assertion" {
 }
 
 variable "saml_idp_metadata_url" {
-  description = "SAML authentication IDP Metadata URL. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml`"
+  description = "SAML authentication IDP Metadata URL. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml` must be set"
   type        = string
   default     = null
 }
 
 variable "saml_idp_metadata_xml" {
-  description = "SAML authentication IDP Metadata XML. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml`"
+  description = "SAML authentication IDP Metadata XML. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml` must be set"
   type        = string
   default     = null
 }

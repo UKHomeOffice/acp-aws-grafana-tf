@@ -54,8 +54,8 @@ No modules.
 | <a name="input_saml_editor_role_values"></a> [saml\_editor\_role\_values](#input\_saml\_editor\_role\_values) | SAML authentication editor role values | `list(string)` | `[]` | no |
 | <a name="input_saml_email_assertion"></a> [saml\_email\_assertion](#input\_saml\_email\_assertion) | SAML authentication email assertion | `string` | `null` | no |
 | <a name="input_saml_groups_assertion"></a> [saml\_groups\_assertion](#input\_saml\_groups\_assertion) | SAML authentication groups assertion | `string` | `null` | no |
-| <a name="input_saml_idp_metadata_url"></a> [saml\_idp\_metadata\_url](#input\_saml\_idp\_metadata\_url) | SAML authentication IDP Metadata URL. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml` | `string` | `null` | no |
-| <a name="input_saml_idp_metadata_xml"></a> [saml\_idp\_metadata\_xml](#input\_saml\_idp\_metadata\_xml) | SAML authentication IDP Metadata XML. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml` | `string` | `null` | no |
+| <a name="input_saml_idp_metadata_url"></a> [saml\_idp\_metadata\_url](#input\_saml\_idp\_metadata\_url) | SAML authentication IDP Metadata URL. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml` must be set | `string` | `null` | no |
+| <a name="input_saml_idp_metadata_xml"></a> [saml\_idp\_metadata\_xml](#input\_saml\_idp\_metadata\_xml) | SAML authentication IDP Metadata XML. Note that either `saml_idp_metadata_url` or `saml_idp_metadata_xml` must be set | `string` | `null` | no |
 | <a name="input_saml_login_assertion"></a> [saml\_login\_assertion](#input\_saml\_login\_assertion) | SAML authentication email assertion | `string` | `null` | no |
 | <a name="input_saml_login_validity_duration"></a> [saml\_login\_validity\_duration](#input\_saml\_login\_validity\_duration) | SAML authentication login validity duration | `number` | `null` | no |
 | <a name="input_saml_name_assertion"></a> [saml\_name\_assertion](#input\_saml\_name\_assertion) | SAML authentication name assertion | `string` | `null` | no |

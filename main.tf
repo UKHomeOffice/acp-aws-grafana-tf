@@ -211,8 +211,8 @@ resource "aws_grafana_workspace_saml_configuration" "grafana_saml" {
   workspace_id            = aws_grafana_workspace.grafana_workspace.id
 }
 
-resource "aws_grafana_license_association" "grafana_license_association" {
-
-  license_type = var.license_type
-  workspace_id = aws_grafana_workspace.grafana_workspace.id
-}
+#resource "aws_grafana_license_association" "grafana_license_association" {
+#
+#  license_type = var.license_type
+#  workspace_id = aws_grafana_workspace.grafana_workspace.id
+#}

@@ -71,6 +71,7 @@ variable "create_saml_configuration" {
   description = "Determines whether the SAML configuration will be created"
   type        = bool
   default     = false
+}
 
 variable "saml_admin_role_values" {
   description = "SAML authentication admin role values"
@@ -148,6 +149,7 @@ variable "associate_license" {
   description = "Determines whether a license will be associated with the workspace"
   type        = bool
   default     = false
+}
 
 variable "license_type" {
   description = "The type of license for the workspace license association. Valid values are `ENTERPRISE` and `ENTERPRISE_FREE_TRIAL`"

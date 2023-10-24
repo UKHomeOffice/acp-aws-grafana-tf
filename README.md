@@ -39,8 +39,10 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_access_type"></a> [account\_access\_type](#input\_account\_access\_type) | The type of account access for the workspace. Valid values are `CURRENT_ACCOUNT` and `ORGANIZATION` | `string` | `"CURRENT_ACCOUNT"` | no |
+| <a name="input_associate_license"></a> [associate\_license](#input\_associate\_license) | Determines whether a license will be associated with the workspace | `bool` | `false` | no |
 | <a name="input_authentication_providers"></a> [authentication\_providers](#input\_authentication\_providers) | Authentication providers for the workspace (valid values: `AWS_SSO`, `SAML`, or both) | `list(string)` | <pre>[<br>  "SAML"<br>]</pre> | no |
 | <a name="input_configuration"></a> [configuration](#input\_configuration) | The configuration string for the workspace | `string` | `null` | no |
+| <a name="input_create_saml_configuration"></a> [create\_saml\_configuration](#input\_create\_saml\_configuration) | Determines whether the SAML configuration will be created | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment the Grafana Workspace is for i.e. dev, prod etc | `string` | n/a | yes |
 | <a name="input_iam_role_force_detach_policies"></a> [iam\_role\_force\_detach\_policies](#input\_iam\_role\_force\_detach\_policies) | Determines whether the workspace IAM role policies will be forced to detach | `bool` | `true` | no |
 | <a name="input_iam_role_max_session_duration"></a> [iam\_role\_max\_session\_duration](#input\_iam\_role\_max\_session\_duration) | Maximum session duration (in seconds) that you want to set for the IAM role | `number` | `null` | no |

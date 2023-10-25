@@ -49,7 +49,7 @@ resource "aws_vpc_endpoint" "grafana" {
   service_name      = "com.amazonaws.eu-west-2.grafana"
   vpc_endpoint_type = "Interface"
 
-  security_group_ids = var.vpc_configuration.value.security_group_ids
+  security_group_ids = var.vpc_configuration.security_group_ids
 
   private_dns_enabled = true
 

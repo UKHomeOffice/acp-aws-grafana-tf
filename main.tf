@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
 
-data "vpc_configuration" {
+data "vpc_configuration" "vpcs"{
   dynamic "vpc_configuration" {
     for_each = length(var.vpc_configuration) > 0 ? [var.vpc_configuration] : []
 
@@ -35,7 +35,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
     }
   }
 
-  vpc_configuration = data.vpc_configuration.vpc_configuration
+  vpc_configuration = data.vpc_configuration.vpcs.vpc_configuration
 
   tags = merge(
     var.tags,
@@ -54,7 +54,7 @@ resource "aws_vpc_endpoint" "grafana" {
   vpc_endpoint_type = "Interface"
 
   security_group_ids = [
-    data.vpc_configuration.vpc_configuration.value.security_group_ids,
+    data.vpc_configuration.vpcs.vpc_configuration.value.security_group_ids,
   ]
 
   private_dns_enabled = true

@@ -46,7 +46,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
 
 resource "aws_vpc_endpoint" "grafana" {
   vpc_id              = data.aws_subnet.grafana_subnet.vpc_id
-  service_name        = "com.amazonaws.eu-west-2.grafana"
+  service_name        = "com.amazonaws.eu-west-2.grafana-workspace"
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.vpc_configuration.subnet_ids
   security_group_ids  = var.vpc_configuration.security_group_ids

@@ -1,6 +1,23 @@
 data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
 
+resource "aws_vpc_endpoint" "grafana" {
+  vpc_id            = data.aws_subnet.grafana_subnet.vpc_id
+  service_name      = "com.amazonaws.eu-west-2.grafana"
+  vpc_endpoint_type = "Interface"
+
+  security_group_ids = [
+    vpc_configuration.value.security_group_ids,
+  ]
+
+  private_dns_enabled = true
+
+  tags = {
+    Name        = "${var.name}-endpoint"
+    Environment = var.environment
+  }
+}
+
 resource "aws_grafana_workspace" "grafana_workspace" {
 
   name                      = var.name
@@ -20,7 +37,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
 
     content {
       prefix_list_ids = network_access_control.value.prefix_list_ids
-      vpce_ids        = network_access_control.value.vpce_ids
+      vpce_ids        = aws_vpc_endpoint.grafana.id
     }
   }
 

@@ -1,6 +1,17 @@
 data "aws_caller_identity" "current" {}
 data "aws_partition" "current" {}
 
+data "vpc_configuration" {
+  dynamic "vpc_configuration" {
+    for_each = length(var.vpc_configuration) > 0 ? [var.vpc_configuration] : []
+
+    content {
+      security_group_ids = vpc_configuration.value.security_group_ids
+      subnet_ids         = vpc_configuration.value.subnet_ids
+    }
+  }
+}
+
 resource "aws_grafana_workspace" "grafana_workspace" {
 
   name                      = var.name
@@ -24,14 +35,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
     }
   }
 
-  dynamic "vpc_configuration" {
-    for_each = length(var.vpc_configuration) > 0 ? [var.vpc_configuration] : []
-
-    content {
-      security_group_ids = vpc_configuration.value.security_group_ids
-      subnet_ids         = vpc_configuration.value.subnet_ids
-    }
-  }
+  vpc_configuration = data.vpc_configuration.vpc_configuration
 
   tags = merge(
     var.tags,
@@ -50,7 +54,7 @@ resource "aws_vpc_endpoint" "grafana" {
   vpc_endpoint_type = "Interface"
 
   security_group_ids = [
-    vpc_configuration.value.security_group_ids,
+    data.vpc_configuration.vpc_configuration.value.security_group_ids,
   ]
 
   private_dns_enabled = true

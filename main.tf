@@ -20,7 +20,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
 
     content {
       prefix_list_ids = network_access_control.value.prefix_list_ids
-      vpce_ids        = aws_vpc_endpoint.grafana.id
+      vpce_ids        = [aws_vpc_endpoint.grafana.id]
     }
   }
 

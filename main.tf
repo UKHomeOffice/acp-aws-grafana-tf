@@ -45,6 +45,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
 }
 
 resource "aws_vpc_endpoint" "grafana" {
+  count = var.create_vpc_endpoint ? 1 : 0
   vpc_id              = data.aws_subnet.grafana_subnet.vpc_id
   service_name        = "com.amazonaws.eu-west-2.grafana-workspace"
   vpc_endpoint_type   = "Interface"

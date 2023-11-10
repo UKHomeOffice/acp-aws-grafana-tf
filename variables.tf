@@ -49,6 +49,12 @@ variable "vpc_configuration" {
   default     = {}
 }
 
+variable "create_vpc_endpoint" {
+  description = "Determines whether the vpc endpoint will be created"
+  type        = bool
+  default     = true
+}
+
 variable "iam_role_force_detach_policies" {
   description = "Determines whether the workspace IAM role policies will be forced to detach"
   type        = bool

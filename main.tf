@@ -20,7 +20,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
 
     content {
       prefix_list_ids = network_access_control.value.prefix_list_ids
-      vpce_ids        = network_access_control.value.vpce_ids
+      vpce_ids        = [aws_vpc_endpoint.grafana.id]
     }
   }
 
@@ -44,20 +44,20 @@ resource "aws_grafana_workspace" "grafana_workspace" {
   )
 }
 
-# resource "aws_vpc_endpoint" "grafana" {
-# ##  count = var.create_vpc_endpoint ? 1 : 0
-#   vpc_id              = data.aws_subnet.grafana_subnet.vpc_id
-#   service_name        = "com.amazonaws.eu-west-2.grafana-workspace"
-#   vpc_endpoint_type   = "Interface"
-#   subnet_ids          = var.vpc_configuration.subnet_ids
-#   security_group_ids  = var.vpc_configuration.security_group_ids
-#   private_dns_enabled = true
+resource "aws_vpc_endpoint" "grafana" {
+  ##  count = var.create_vpc_endpoint ? 1 : 0
+  vpc_id              = data.aws_subnet.grafana_subnet.vpc_id
+  service_name        = "com.amazonaws.eu-west-2.grafana-workspace"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = var.vpc_configuration.subnet_ids
+  security_group_ids  = var.vpc_configuration.security_group_ids
+  private_dns_enabled = true
 
-#   tags = {
-#     Name        = "${var.name}-endpoint"
-#     Environment = var.environment
-#   }
-# }
+  tags = {
+    Name        = "${var.name}-endpoint"
+    Environment = var.environment
+  }
+}
 
 data "aws_subnet" "grafana_subnet" {
 

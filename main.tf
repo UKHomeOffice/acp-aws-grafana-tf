@@ -3,13 +3,13 @@ data "aws_partition" "current" {}
 
 resource "aws_grafana_workspace" "grafana_workspace" {
 
-  name                      = var.name
-  account_access_type       = var.account_access_type
-  authentication_providers  = var.authentication_providers
-  permission_type           = "SERVICE_MANAGED"
+  name                     = var.name
+  account_access_type      = var.account_access_type
+  authentication_providers = var.authentication_providers
+  permission_type          = "SERVICE_MANAGED"
 
   configuration             = var.configuration
-  data_sources              = ["AMAZON_OPENSEARCH_SERVICE","CLOUDWATCH","PROMETHEUS"]
+  data_sources              = ["AMAZON_OPENSEARCH_SERVICE", "CLOUDWATCH", "PROMETHEUS"]
   description               = "Managed by Terraform"
   grafana_version           = "9.4"
   notification_destinations = var.notification_destinations
@@ -20,7 +20,7 @@ resource "aws_grafana_workspace" "grafana_workspace" {
 
     content {
       prefix_list_ids = network_access_control.value.prefix_list_ids
-      vpce_ids        = [aws_vpc_endpoint.grafana.id]
+      vpce_ids        = network_access_control.value.vpce_ids
     }
   }
 
@@ -44,20 +44,20 @@ resource "aws_grafana_workspace" "grafana_workspace" {
   )
 }
 
-resource "aws_vpc_endpoint" "grafana" {
-##  count = var.create_vpc_endpoint ? 1 : 0
-  vpc_id              = data.aws_subnet.grafana_subnet.vpc_id
-  service_name        = "com.amazonaws.eu-west-2.grafana-workspace"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = var.vpc_configuration.subnet_ids
-  security_group_ids  = var.vpc_configuration.security_group_ids
-  private_dns_enabled = true
+# resource "aws_vpc_endpoint" "grafana" {
+# ##  count = var.create_vpc_endpoint ? 1 : 0
+#   vpc_id              = data.aws_subnet.grafana_subnet.vpc_id
+#   service_name        = "com.amazonaws.eu-west-2.grafana-workspace"
+#   vpc_endpoint_type   = "Interface"
+#   subnet_ids          = var.vpc_configuration.subnet_ids
+#   security_group_ids  = var.vpc_configuration.security_group_ids
+#   private_dns_enabled = true
 
-  tags = {
-    Name        = "${var.name}-endpoint"
-    Environment = var.environment
-  }
-}
+#   tags = {
+#     Name        = "${var.name}-endpoint"
+#     Environment = var.environment
+#   }
+# }
 
 data "aws_subnet" "grafana_subnet" {
 
@@ -141,42 +141,42 @@ resource "aws_iam_role" "grafana_iam_role" {
 
 data "aws_iam_policy_document" "grafana_iam_policy_doc" {
 
-   statement {
-      actions = [
-        "es:ESHttpGet",
-        "es:DescribeElasticsearchDomains",
-        "es:ListDomainNames",
-      ]
-      resources = ["*"]
+  statement {
+    actions = [
+      "es:ESHttpGet",
+      "es:DescribeElasticsearchDomains",
+      "es:ListDomainNames",
+    ]
+    resources = ["*"]
   }
 
-   statement {
-      actions = [
-        "es:ESHttpPost",
-      ]
-      resources = [
-        "arn:${data.aws_partition.current.partition}:es:*:*:domain/*/_msearch*",
-        "arn:${data.aws_partition.current.partition}:es:*:*:domain/*/_opendistro/_ppl",
-      ]
+  statement {
+    actions = [
+      "es:ESHttpPost",
+    ]
+    resources = [
+      "arn:${data.aws_partition.current.partition}:es:*:*:domain/*/_msearch*",
+      "arn:${data.aws_partition.current.partition}:es:*:*:domain/*/_opendistro/_ppl",
+    ]
   }
 
-   statement {
-      actions = [
-        "aps:ListWorkspaces",
-        "aps:DescribeWorkspace",
-        "aps:QueryMetrics",
-        "aps:GetLabels",
-        "aps:GetSeries",
-        "aps:GetMetricMetadata",
-      ]
-      resources = ["*"]
+  statement {
+    actions = [
+      "aps:ListWorkspaces",
+      "aps:DescribeWorkspace",
+      "aps:QueryMetrics",
+      "aps:GetLabels",
+      "aps:GetSeries",
+      "aps:GetMetricMetadata",
+    ]
+    resources = ["*"]
   }
 
-   statement {
-      actions = [
-        "sns:Publish",
-      ]
-      resources = ["arn:${data.aws_partition.current.partition}:sns:*:${data.aws_caller_identity.current.account_id}:grafana*"]
+  statement {
+    actions = [
+      "sns:Publish",
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:sns:*:${data.aws_caller_identity.current.account_id}:grafana*"]
   }
 }
 
